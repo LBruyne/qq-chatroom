@@ -28,13 +28,13 @@ public class Server {
      */
     private String DBUserName = "root";
     private String DBPassword = "lxmxx1008";
-    private String DBUrl = "jdbc:mysql://localhost:3306/qq_chat?autoReconnect=true&useSSL=false";
+    private String DBUrl = "jdbc:mysql://localhost:3306/qq_chat?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC";
 
     /**
      * 服务器的socket
      */
     private ServerSocket listener;
-    private final int PORT = 6071;
+    private final int PORT = 6666;
 
     /**
      * 连接的客户端
@@ -212,6 +212,8 @@ public class Server {
     public void run() throws IOException, ClassNotFoundException {
 
         db = new DBManager(DBUrl, DBUserName, DBPassword);
+
+        System.out.println("SERVER: Listening for client...");
 
         /**
          * 监听Socket,

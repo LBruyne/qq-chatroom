@@ -25,7 +25,7 @@ public class DBManager {
     /**
      * MySQL 8.0 以下版本: JDBC 驱动名
      */
-    final String JDBC_DRIVER = "com.mysql.jdbc.Driver";
+    final String JDBC_DRIVER = "com.mysql.cj.jdbc.Driver";
 
     DBManager(String DBUrl, String DBUserName, String DBPassword) throws ClassNotFoundException {
         this.DBUserName = DBUserName;
@@ -46,7 +46,7 @@ public class DBManager {
             e.printStackTrace();
         }
 
-        System.out.println("SERVER: Connection established");
+        System.out.println("SERVER: Connection established.");
     }
 
     /**
