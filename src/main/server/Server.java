@@ -32,11 +32,32 @@ public class Server {
      * 服务器的socket
      */
     private ServerSocket listener;
+    private final int PORT = 6071;
 
     /**
      * 连接的客户端
      */
-    private ArrayList<ConnectionInfo> ConnectionList = new ArrayList<ConnectionInfo>();
+    private ArrayList<ConnectionInfo> clientList = new ArrayList<ConnectionInfo>();
+
+    /**
+     * 内部类，
+     * 处理客户线程，
+     * 对每一个客户端，服务器都会开一个线程进行处理
+     */
+    protected class ClientThread implements Runnable {
+
+        private ConnectionInfo client;
+
+        ClientThread(Socket clientSocket) {
+            client = new ConnectionInfo(clientSocket);
+            System.out.println("SERVER: Client connected, new thread created.");
+        }
+
+        public void run() {
+
+        }
+    }
+
 
     /**
      * Server构造函数，
@@ -44,7 +65,7 @@ public class Server {
      */
     Server() {
         try {
-            listener = new ServerSocket(6071);
+            listener = new ServerSocket(PORT);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -65,25 +86,31 @@ public class Server {
         while (true) {
 
             /**
-             * 对连接数量进行判断，
-             * 限制最大连接数量
-             */
-            if (connections + 1 > MAX_CONNECTIONS) {
-                System.out.println("SERVER: Client number overflow.");
-                System.out.println("Reject this connection.");
-                continue;
-            }
-
-            /**
              * 阻塞
              */
             Socket client = listener.accept();
 
             /**
+             * 对连接数量进行判断，
+             * 限制最大连接数量
+             */
+            if (connections + 1 > MAX_CONNECTIONS) {
+                System.out.println("SERVER: Client number overflow.");
+                System.out.println("SERVER: Reject this connection.");
+                continue;
+            }
+
+            connections++;
+
+            /**
              * 使用线程处理客户端消息
              */
-            // new Thread(new processEachClientThread(client, clientList, db)).start();
+            new Thread(new ClientThread(client)).start();
         }
     }
 
+    public static void main(String[] args) throws IOException, ClassNotFoundException {
+        Server s = new Server();
+        s.run();
+    }
 }
