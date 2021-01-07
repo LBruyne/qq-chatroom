@@ -53,15 +53,15 @@ public class SignUp extends javax.swing.JDialog {
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         jLabel1.setFont(new java.awt.Font("Ubuntu", 1, 36)); // NOI18N
-        jLabel1.setText("Multi-User Chat");
+        jLabel1.setText("QQ2021");
 
         jPanel1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
-        jLabel3.setText("Username:");
+        jLabel3.setText("帐号:");
 
-        jLabel4.setText("Password:");
+        jLabel4.setText("密码:");
 
-        jLabel5.setText("Confirm:");
+        jLabel5.setText("再次输入密码:");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -96,16 +96,16 @@ public class SignUp extends javax.swing.JDialog {
                                         javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addContainerGap(32, Short.MAX_VALUE)));
 
-        jLabel2.setText("Signup");
+        jLabel2.setText("注册");
 
-        submitButton.setText("Submit");
+        submitButton.setText("提交");
         submitButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 submitButton(evt);
             }
         });
 
-        cancelButton.setText("Cancel");
+        cancelButton.setText("取消");
         cancelButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cancelButton(evt);
@@ -145,21 +145,16 @@ public class SignUp extends javax.swing.JDialog {
         String pass2 = new String(confirmField.getPassword());
         /**密码是否匹配*/
         if (!pass1.equals(pass2)) {
-            JOptionPane.showMessageDialog(this, "Password fields do not match.", "Warning", 0);
-        } else if (pass1.length() < 8) {
-            /**密码长度大于8位*/
-            JOptionPane.showMessageDialog(this, "Password must be at least 8 characters long.", "Warning", 0);
-        } else if (usernameField.getText().length() < 4) {
-            /**用户名大于三位*/
-            JOptionPane.showMessageDialog(this, "Username must be at least 4 characters long.", "Warning", 0);
-        } else {
+            JOptionPane.showMessageDialog(this, "两次输入密码不匹配", "Warning", 0);
+        }
+        else {
             client.write("NEWUSER: " + usernameField.getText() + "," + new String(passwordField.getPassword()));
             String response = client.read();
             /**服务器返回消息，TAKEN代表已经存在用户 USERCREATED代表成功*/
             if (response.equals("TAKEN"))
-                JOptionPane.showMessageDialog(this, "Username is already taken.", "Warning", 0);
+                JOptionPane.showMessageDialog(this, "用户名已被注册", "Warning", 0);
             else if (response.equals("USERCREATED")) {
-                JOptionPane.showMessageDialog(this, "Your account has been created.", "Warning", 1);
+                JOptionPane.showMessageDialog(this, "注册成功！", "Warning", 1);
                 dispose();
             }
         }

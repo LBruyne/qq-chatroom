@@ -59,7 +59,7 @@ public class DBManager {
         ResultSet rs = null;
 
         try {
-            ps = db.prepareStatement("SELECT * FROM users WHERE u_name = " + username);
+            ps = db.prepareStatement("SELECT * FROM users WHERE u_name = '" + username + "'");
             rs = ps.executeQuery();
             if (rs.next())
                 isExists = true;
@@ -101,9 +101,8 @@ public class DBManager {
         ResultSet rs = null;
         boolean userExist = true;
         try {
-            ps = db.prepareStatement("SELECT * FROM users WHERE u_name = " + username + " and u_pwd = " + password);
+            ps = db.prepareStatement("SELECT * FROM users WHERE u_name = '" + username + "' and u_pwd = '" + password + "'");
             rs = ps.executeQuery();
-            String digest, salt;
             if (!rs.next()) {
                 userExist = false;
             }

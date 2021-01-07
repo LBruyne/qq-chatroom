@@ -1,6 +1,8 @@
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import javax.swing.*;
 
 /**
@@ -13,13 +15,13 @@ public class Login extends javax.swing.JFrame {
 
     private javax.swing.JButton exitButton;
     private javax.swing.JButton miniButton;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel enrollLabel;
+    private javax.swing.JLabel codeLabel;
     private javax.swing.JButton loginButton;
     private javax.swing.JPasswordField passwordField;
-    private javax.swing.JButton signupButton;
     private javax.swing.JTextField usernameField;
+    private javax.swing.JCheckBox rememberPswd;
+    private javax.swing.JCheckBox autoLogin;
 
 
     /**
@@ -35,34 +37,6 @@ public class Login extends javax.swing.JFrame {
      * 初始化界面
      */
     private void initFrame() {
-
-        jLabel1 = new javax.swing.JLabel();
-        usernameField = new javax.swing.JTextField();
-        jLabel2 = new javax.swing.JLabel();
-        passwordField = new javax.swing.JPasswordField();
-        jLabel3 = new javax.swing.JLabel();
-        loginButton = new javax.swing.JButton();
-        signupButton = new javax.swing.JButton();
-
-        jLabel1.setFont(new java.awt.Font("Ubuntu", 1, 36)); // NOI18N
-        jLabel1.setText("QQ2021");
-        jLabel2.setText("帐号:");
-        jLabel3.setText("密码:");
-
-        // 密码框事件
-        passwordField.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                passwordFieldKeyPressed(evt);
-            }
-        });
-
-        // 登录按钮
-        loginButton.setText("登录");
-        loginButton.addActionListener(evt -> loginButtonActionPerformed(evt));
-
-        // 注册按钮
-        signupButton.setText("注册");
-        signupButton.addActionListener(evt -> signupButtonActionPerformed(evt));
 
         // Border Layout
         Toolkit t = Toolkit.getDefaultToolkit();
@@ -86,53 +60,32 @@ public class Login extends javax.swing.JFrame {
         this.add(eastPanel,BorderLayout.EAST);
 
         this.setVisible(true);
-        /*
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(layout
-                .createSequentialGroup().addContainerGap(70, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                        .addComponent(jLabel2).addComponent(jLabel3))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(passwordField, javax.swing.GroupLayout.PREFERRED_SIZE, 181,
-                                                javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(usernameField, javax.swing.GroupLayout.PREFERRED_SIZE, 181,
-                                                javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(62, 62, 62))
-                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING,
-                                layout.createSequentialGroup().addComponent(loginButton)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addComponent(signupButton)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addComponent(exitButton).addGap(111, 111, 111))
-                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING,
-                                layout.createSequentialGroup().addComponent(jLabel1).addGap(100, 100, 100)))));
-        layout.setVerticalGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(layout.createSequentialGroup().addGap(29, 29, 29).addComponent(jLabel1).addGap(31, 31, 31)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(usernameField, javax.swing.GroupLayout.PREFERRED_SIZE,
-                                        javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(jLabel2))
-                        .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(passwordField, javax.swing.GroupLayout.PREFERRED_SIZE,
-                                        javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(jLabel3))
-                        .addGap(35, 35, 35)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(loginButton).addComponent(signupButton).addComponent(exitButton))
-                        .addContainerGap(61, Short.MAX_VALUE)));
-
-        pack();
-
-         */
     }
 
     private JPanel createEastPanel() {
         JPanel jp = new JPanel();
+
+        jp.setLayout(null);
+        jp.setPreferredSize(new Dimension(130,0));
+
+        // 注册账号
+        enrollLabel = new JLabel("注册账号");
+        enrollLabel.setBounds(0, 10, 100, 30);
+        enrollLabel.setFont(new Font("宋体",Font.BOLD,15));
+        enrollLabel.setForeground(new Color(100,149,238));
+        enrollLabel.addMouseListener(new LabelHandler(enrollLabel) );
+        enrollLabel.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));      //将鼠标设置为手型
+
+        // 忘记密码
+        codeLabel=new JLabel("忘记密码");
+        codeLabel.setBounds(0, 42, 100, 30);
+        codeLabel.setFont(new  Font("宋体",Font.BOLD,15));
+        codeLabel.setForeground(new Color(100,149,238));
+        // codeLabel.addMouseListener(new LabelHandler(codeLabel));                 TODO: 实现忘记密码的功能
+        codeLabel.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+
+        jp.add(enrollLabel);
+        jp.add(codeLabel);
 
         return jp;
     }
@@ -140,11 +93,56 @@ public class Login extends javax.swing.JFrame {
     private JPanel createSouthPanel() {
         JPanel jp = new JPanel();
 
+        jp.setLayout(null);
+        jp.setPreferredSize(new Dimension(0,40));
+
+        // 登录按钮
+        loginButton = new JButton(new ImageIcon(Login.class.getResource("/imgs/login-icon.png")));
+        loginButton.setBounds(160,0,200,30);
+        loginButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));      //将鼠标设置为手掌型
+        loginButton.setContentAreaFilled(false);
+        loginButton.setFocusPainted(false);
+        loginButton.addActionListener(evt -> loginButtonActionPerformed(evt));
+
+        jp.add(loginButton);
+
         return jp;
     }
 
     private JPanel createCenterPanel() {
         JPanel jp = new JPanel();
+
+        jp.setLayout(null);
+        jp.setPreferredSize(new Dimension(0,220));
+
+        // 帐号框
+        usernameField = new JTextField(10);                         //最多存放10个字
+        usernameField.setBounds(0,10,200,30);
+        usernameField.setFont(new Font("宋体",Font.BOLD,17));     //字体和字体大小
+
+        // 记住密码
+        rememberPswd = new JCheckBox("记住密码", false);
+        rememberPswd.setBounds(0,78,80,18);
+
+        // 自动登录
+        autoLogin = new JCheckBox("自动登录", false);
+        autoLogin.setBounds(110, 78, 80, 18);
+
+        // 密码框
+        passwordField=new JPasswordField(18);
+        passwordField.setBounds(0,42, 200, 30);
+        passwordField.setFont(new Font("宋体",Font.BOLD,17));
+        passwordField.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                passwordFieldKeyPressed(evt);
+            }
+        });
+        passwordField.setOpaque(false);
+
+        jp.add(rememberPswd);
+        jp.add(passwordField);
+        jp.add(autoLogin);
+        jp.add(usernameField);
 
         return jp;
     }
@@ -200,6 +198,10 @@ public class Login extends javax.swing.JFrame {
     }
 
     private void attemptLogin() {
+        if(usernameField.getText().equals("") || passwordField.getPassword().equals("")) {
+            JOptionPane.showMessageDialog(this, "请填写账号和密码", "Warning", 0);
+            return ;
+        }
         if (client.login(usernameField.getText(), new String(passwordField.getPassword()))) {
             chatRoom.setVisible(true);
             chatRoom.startChatListener();
@@ -221,10 +223,30 @@ public class Login extends javax.swing.JFrame {
     /**
      * 注册按钮
      */
-    private void signupButtonActionPerformed(java.awt.event.ActionEvent evt) {
-        SignUp SignUp = new SignUp(chatRoom, true, client);
-        SignUp.setLocationRelativeTo(null);
-        SignUp.setVisible(true);
+    public class LabelHandler extends MouseAdapter {
+        private JLabel label;
+
+        public LabelHandler(JLabel label) {
+            this.label = label;
+        }
+
+        public void mouseClicked(MouseEvent e) {
+            SignUp SignUp = new SignUp(chatRoom, true, client);
+            SignUp.setLocationRelativeTo(null);
+            SignUp.setVisible(true);
+        }
+
+        public void mouseEntered(MouseEvent e) {
+            label.setForeground(new Color(255,77,35));
+        }
+
+        public void mousePressed(MouseEvent e) {
+            label.setForeground(new Color(255,77,35));
+        }
+
+        public void mouseExited(MouseEvent e) {
+            label.setForeground(new Color(100,149,238));
+        }
     }
 
     /**

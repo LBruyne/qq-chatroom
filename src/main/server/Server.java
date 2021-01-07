@@ -132,12 +132,16 @@ public class Server {
         private synchronized boolean userLogin(String clientMsg) {
             boolean accepted = false;
 
-            /**取出用户名和密码*/
+            /**
+             * 取出用户名和密码
+             */
             clientMsg = clientMsg.split(" ")[1];
             String username = clientMsg.split(",")[0];
             String password = clientMsg.split(",")[1];
 
-            /**与数据库里的进行比对验证*/
+            /**
+             * 与数据库里的进行比对验证
+             */
             try {
                 if (db.userLogin(username, password)) {
                     accepted = true;

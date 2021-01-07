@@ -32,14 +32,14 @@ public class ChatRoom extends javax.swing.JFrame {
         userList = new javax.swing.JList();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("Multi-User Chat");
+        setTitle("QQ群聊");
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosed(java.awt.event.WindowEvent evt) {
                 formWindowClosed(evt);
             }
         });
 
-        sendButton.setText("Send");
+        sendButton.setText("发送");
         sendButton.setName("SendButton");
         sendButton.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mousePressed(java.awt.event.MouseEvent evt) {
@@ -119,7 +119,6 @@ public class ChatRoom extends javax.swing.JFrame {
 class ClientThreadListener implements Runnable {
 
     private JTextPane chatBox;
-    @SuppressWarnings("rawtypes")
     private JList usernameList;
     private Client client;
 
@@ -129,12 +128,14 @@ class ClientThreadListener implements Runnable {
         client = cli;
     }
 
-    @SuppressWarnings("unchecked")
+
     public void run() {
         while (true) {
             String line;
             if ((line = client.read()) != null) {
-                /*更新在线用户，通过 USERLIST 字符串来说明是在线用户列表*/
+                /**
+                 * 更新在线用户，通过 USERLIST 字符串来说明是在线用户列表
+                 */
                 if (line.startsWith("USERLIST: ")) {
                     String[] usernames = line.substring(line.indexOf(' ')).split(" ");
                     usernameList.setListData(usernames);
