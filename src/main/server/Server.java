@@ -150,7 +150,7 @@ public class Server {
                     updateClientUserList();
 
                     System.out.println("SERVER: Client logged in with username -> " + client.getUsername());
-                    broadcast("ROOM: User " + client.getUsername() + " has joined the chat.", false);
+                    broadcast("ROOM: 用户 " + client.getUsername() + " 加入了群聊。", false);
                 } else
                     client.write("DENIED");
 

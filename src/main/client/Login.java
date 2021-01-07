@@ -1,15 +1,18 @@
+import java.awt.*;
+import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import javax.swing.*;
 
 /**
  * 登陆管理
  */
-public class Login extends javax.swing.JDialog {
+public class Login extends javax.swing.JFrame {
     private Client client;
     private ChatRoom chatRoom;
     private boolean loggedIn = false;
 
     private javax.swing.JButton exitButton;
+    private javax.swing.JButton miniButton;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -23,7 +26,6 @@ public class Login extends javax.swing.JDialog {
      * 登陆的界面
      */
     public Login(java.awt.Frame parent, boolean modal, Client client) {
-        super(parent, modal);
         initFrame();
         this.client = client;
         this.chatRoom = (ChatRoom) parent;
@@ -41,49 +43,50 @@ public class Login extends javax.swing.JDialog {
         jLabel3 = new javax.swing.JLabel();
         loginButton = new javax.swing.JButton();
         signupButton = new javax.swing.JButton();
-        exitButton = new javax.swing.JButton();
-
-        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        addWindowListener(new java.awt.event.WindowAdapter() {
-            public void windowClosed(java.awt.event.WindowEvent evt) {
-                formWindowClosed(evt);
-            }
-        });
 
         jLabel1.setFont(new java.awt.Font("Ubuntu", 1, 36)); // NOI18N
-        jLabel1.setText("Multi-User Chat");
+        jLabel1.setText("QQ2021");
+        jLabel2.setText("帐号:");
+        jLabel3.setText("密码:");
 
-        jLabel2.setText("Username:");
-
+        // 密码框事件
         passwordField.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 passwordFieldKeyPressed(evt);
             }
         });
 
-        jLabel3.setText("Password:");
+        // 登录按钮
+        loginButton.setText("登录");
+        loginButton.addActionListener(evt -> loginButtonActionPerformed(evt));
 
-        loginButton.setText("Login");
-        loginButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                loginButtonActionPerformed(evt);
-            }
-        });
+        // 注册按钮
+        signupButton.setText("注册");
+        signupButton.addActionListener(evt -> signupButtonActionPerformed(evt));
 
-        signupButton.setText("Signup");
-        signupButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                signupButtonActionPerformed(evt);
-            }
-        });
+        // Border Layout
+        Toolkit t = Toolkit.getDefaultToolkit();
+        Dimension d = t.getScreenSize();
 
-        exitButton.setText("Exit");
-        exitButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                exitButtonActionPerformed(evt);
-            }
-        });
+        this.setBounds(d.width/3,d.height/3,500,330);
+        this.setIconImage(t.getImage(Login.class.getResource("/imgs/QQ-icon.jpg")));
+        this.setDefaultCloseOperation(HIDE_ON_CLOSE);
+        this.setUndecorated(true);
+        this.setResizable(false);
 
+        JPanel northPanel = createNorthPanel();
+        JPanel westPanel = createWestPanel();
+        JPanel centerPanel = createCenterPanel();
+        JPanel southPanel = createSouthPanel();
+        JPanel eastPanel = createEastPanel();
+        this.add(northPanel,BorderLayout.NORTH);
+        this.add(westPanel,BorderLayout.WEST);
+        this.add(southPanel,BorderLayout.SOUTH);
+        this.add(centerPanel,BorderLayout.CENTER);
+        this.add(eastPanel,BorderLayout.EAST);
+
+        this.setVisible(true);
+        /*
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(layout
@@ -124,53 +127,128 @@ public class Login extends javax.swing.JDialog {
                         .addContainerGap(61, Short.MAX_VALUE)));
 
         pack();
+
+         */
+    }
+
+    private JPanel createEastPanel() {
+        JPanel jp = new JPanel();
+
+        return jp;
+    }
+
+    private JPanel createSouthPanel() {
+        JPanel jp = new JPanel();
+
+        return jp;
+    }
+
+    private JPanel createCenterPanel() {
+        JPanel jp = new JPanel();
+
+        return jp;
+    }
+
+    private JPanel createWestPanel() {
+        JPanel jp = new JPanel();
+        jp.setLayout(null);
+        jp.setPreferredSize(new Dimension(160,0));
+
+        // 背景
+        JLabel QQIconLabel = new JLabel(new ImageIcon(Login.class.getResource("/imgs/QQ-max-icon.jpg")));
+        QQIconLabel.setBounds(35,0,100,100);
+
+        jp.add(QQIconLabel);
+        return jp;
+    }
+
+    private JPanel createNorthPanel() {
+        JPanel jp = new JPanel();
+        jp.setLayout(null);
+        jp.setPreferredSize(new Dimension(0,190));
+
+        // 背景
+        JLabel bgLabel = new JLabel(new ImageIcon(Login.class.getResource("/imgs/header-bg-icon.png")));
+        bgLabel.setBounds(0,0,500,190);
+        bgLabel.setOpaque(false);               // 透明
+
+        // 退出按钮
+        exitButton = new JButton(new ImageIcon(Login.class.getResource("imgs/quit-icon.jpg")));
+        exitButton.setRolloverIcon(new ImageIcon(Login.class.getResource("imgs/quit-on-icon.png")));
+        exitButton.setPressedIcon(new ImageIcon(Login.class.getResource("imgs/quit-on-icon.png")));
+        exitButton.setContentAreaFilled(false); //设置按钮透明
+        exitButton.setBorderPainted(false);     //取消按钮的边框
+        exitButton.setFocusPainted(false);      //消除按钮的焦点，即点击按钮时不出现边框
+        exitButton.setBounds(468, 0, 30, 30);
+        exitButton.setToolTipText("关闭");
+        exitButton.addActionListener(evt -> exitButtonActionPerformed(evt));
+
+        // 最小化按钮
+        miniButton = new JButton(new ImageIcon(Login.class.getResource("imgs/minimize-icon.jpg")));
+        miniButton.setRolloverIcon(new ImageIcon(Login.class.getResource("imgs/minimize-on-icon.png")));
+        miniButton.setPressedIcon(new ImageIcon(Login.class.getResource("imgs/minimize-on-icon.png")));
+        miniButton.setContentAreaFilled(false);
+        miniButton.setBorderPainted(false);
+        miniButton.setFocusPainted(false);
+        miniButton.setBounds(437, 0, 30, 30);
+        miniButton.addActionListener(evt -> miniButtonActionPerformed(evt));
+
+        jp.add(exitButton);
+        jp.add(miniButton);
+        jp.add(bgLabel);
+        return jp;
     }
 
     private void attemptLogin() {
-            if (client.login(usernameField.getText(), new String(passwordField.getPassword()))) {
-                chatRoom.setVisible(true);
-                chatRoom.startChatListener();
-                loggedIn = true;
-                dispose();
-            } else {
-                JOptionPane.showMessageDialog(this, "Incorrect username or password.", "Warning", 0);
-            }
+        if (client.login(usernameField.getText(), new String(passwordField.getPassword()))) {
+            chatRoom.setVisible(true);
+            chatRoom.startChatListener();
+            loggedIn = true;
+            dispose();
+        } else {
+            // TODO: QQ的提示窗
+            JOptionPane.showMessageDialog(this, "帐号或密码错误", "Warning", 0);
+        }
     }
 
-    /**登陆按钮*/
-    private void loginButtonActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_loginButtonActionPerformed
+    /**
+     * 登陆按钮
+     */
+    private void loginButtonActionPerformed(java.awt.event.ActionEvent evt) {
         attemptLogin();
-    }// GEN-LAST:event_loginButtonActionPerformed
-    /**注册按钮*/
-    private void signupButtonActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_signupButtonActionPerformed
+    }
+
+    /**
+     * 注册按钮
+     */
+    private void signupButtonActionPerformed(java.awt.event.ActionEvent evt) {
         SignUp SignUp = new SignUp(chatRoom, true, client);
         SignUp.setLocationRelativeTo(null);
         SignUp.setVisible(true);
     }
-    /**退出按钮*/
-    private void exitButtonActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_exitButtonActionPerformed
+
+    /**
+     * 退出按钮
+     */
+    private void exitButtonActionPerformed(java.awt.event.ActionEvent evt) {
         client.sendQuitMessage();
         dispose();
         System.exit(0);
     }
-    /**输入完密码，按下回车后，登陆*/
-    private void passwordFieldKeyPressed(java.awt.event.KeyEvent evt) {// GEN-FIRST:event_passwordFieldKeyPressed
+
+    /**
+     * 最小化按钮
+     */
+    private void miniButtonActionPerformed(java.awt.event.ActionEvent evt) {
+        this.setExtendedState(ICONIFIED);
+    }
+
+    /**
+     * 输入完密码，按下回车后，登陆
+     */
+    private void passwordFieldKeyPressed(java.awt.event.KeyEvent evt) {
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             attemptLogin();
         }
     }
-    /**关闭窗口*/
-    private void formWindowClosed(java.awt.event.WindowEvent evt) {// GEN-FIRST:event_formWindowClosed
-        dispose();
-
-        if (!loggedIn) {
-            client.sendQuitMessage();
-            client.disconnect();
-            System.exit(0);
-        }
-    }
-
-
-
-
 }
