@@ -18,5 +18,6 @@
 
 #### Quick Start
 
-- 更改Server中的数据库用户和密码（注意数据库版本和对应驱动）
+- 使用resources中的建库sql(MySQL)完成数据库建立
+- 更改Server[./src/main/server/Server.java]中的数据库用户和密码（注意数据库版本和对应驱动）
 - 先运行Server，然后可以并行的运行Client
