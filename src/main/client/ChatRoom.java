@@ -110,39 +110,38 @@ public class ChatRoom extends javax.swing.JFrame {
      * 开始一个监听线程
      */
     public void startChatListener() {
-        new Thread(new ClientThreadListener(client, chatTextPane, userList)).start();
-    }
-}
-
-/**
- * 线程，处理消息*/
-class ClientThreadListener implements Runnable {
-
-    private JTextPane chatBox;
-    private JList usernameList;
-    private Client client;
-
-    ClientThreadListener(Client cli, JTextPane chatTextPane, JList<?> jList1) {
-        chatBox = chatTextPane;
-        usernameList = jList1;
-        client = cli;
+        new Thread(new ClientThread(client, chatTextPane, userList)).start();
     }
 
+    class ClientThread implements Runnable {
 
-    public void run() {
-        while (true) {
-            String line;
-            if ((line = client.read()) != null) {
-                /**
-                 * 更新在线用户，通过 USERLIST 字符串来说明是在线用户列表
-                 */
-                if (line.startsWith("USERLIST: ")) {
-                    String[] usernames = line.substring(line.indexOf(' ')).split(" ");
-                    usernameList.setListData(usernames);
-                } else {
-                    chatBox.setText(chatBox.getText() + line + "\n");/*更新聊天框的内容*/
+        private JTextPane chatBox;
+        private JList usernameList;
+        private Client client;
+
+        ClientThread(Client cli, JTextPane chatTextPane, JList<?> jList1) {
+            chatBox = chatTextPane;
+            usernameList = jList1;
+            client = cli;
+        }
+
+
+        public void run() {
+            while (true) {
+                String line;
+                if ((line = client.read()) != null) {
+                    /**
+                     * 更新在线用户，通过 USERLIST 字符串来说明是在线用户列表
+                     */
+                    if (line.startsWith("USERLIST: ")) {
+                        String[] usernames = line.substring(line.indexOf(' ')).split(" ");
+                        usernameList.setListData(usernames);
+                    } else {
+                        chatBox.setText(chatBox.getText() + line + "\n");/*更新聊天框的内容*/
+                    }
                 }
             }
         }
     }
 }
+
